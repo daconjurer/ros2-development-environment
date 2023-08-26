@@ -1,13 +1,6 @@
 name: "Test"
 description: "Test using devcontainer"
-inputs:
-  workdir:  # name of the working directory
-    description: "The name of the working directory"
-    required: true
-    default: "libs/"
 runs:
   using: "docker"
   image: "../../../docker/Dockerfile.dev"
   entrypoint: ".github/actions/test/run.sh"
-  args:
-    - ${{ inputs.workdir }}

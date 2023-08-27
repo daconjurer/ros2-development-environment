@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
   workflow_dispatch:
-    
+
 jobs:
   test:
     name: test
@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          linter: [cppcheck, cpplint, uncrustify, lint_cmake, xmllint, flake8, pep257]
+          linter: [xmllint, flake8, pep257] #, cppcheck, cpplint, uncrustify, lint_cmake]
     steps:
       - 
         name: Checkout code

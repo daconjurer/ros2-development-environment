@@ -1,6 +1,6 @@
-name: 'Lint'
-description: 'Lint using devcontainer'
+name: "Lint"
+description: "Lint using devcontainer"
 runs:
-  using: 'docker'
-  image: '../../../.devcontainer/Dockerfile'
+  using: "docker"
+  image: "../../../docker/Dockerfile.dev"
   entrypoint: ".github/actions/lint/run.sh"

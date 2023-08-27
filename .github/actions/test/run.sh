@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-./setup.sh
-./build.sh
-./test.sh
+./setup_ros.sh
+./build_ros.sh
+./test_ros.sh

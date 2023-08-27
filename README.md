@@ -7,3 +7,9 @@ It is a fork from the **VSCode ROS2 Workspace Template** project for the _iron_ 
 ## Use
 For more information about its use, please refer to the original README file from the
 VSCode template project (`.README`).
+
+# Linting
+
+```
+ament_flake8 src/ --config src/ament_flake8.ini
+```

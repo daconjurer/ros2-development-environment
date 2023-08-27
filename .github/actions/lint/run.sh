@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-./setup.sh
+./setup_ros.sh
 ament_${LINTER} src/

@@ -24,21 +24,51 @@ for more info on how to run the nodes (these are just Python scripts after all).
 For general information about the use of the development container, please refer to the original README file from the
 VSCode template project (`.README`).
 
-Once the container is opened in VS Code, all the ros2 commands are available and the packages can be placed in the `src`
-folder (which is the `src` folder of the workspace). Building the packages is possible from the
+Once the container is opened in VS Code, all the ros2 commands are available and the packages are available under `src/packages`
+(see [Packages](README.md#packages)). Building the packages is possible from the
 `ros2-development-workspace` folder (default workspace).
 
 ## Packages
 
-The devcontainer bind-mounts a host folder of ROS packages into the workspace at `src/packages`.
-Two environment variables on the host control this, and both are optional:
+The ROS packages you work on live outside this repo, in a folder on the host that the devcontainer bind-mounts into the workspace at `src/packages`.
+A bind mount is not a copy, so edits on the host show up in the container immediately and the other way around.
+Files created by `colcon build` inside the package folders also appear on the host.
+This repo's own `src/` folder is not affected.
+
+```mermaid
+sequenceDiagram
+    participant H as Host: ../packages/fastapi-ros2
+    participant C as Container: src/packages/fastapi-ros2
+    Note over H,C: Bind mount: the same files, not a copy
+    H->>C: Edit a file on the host (visible immediately)
+    C->>H: colcon build output (visible on the host)
+```
+
+By default the host folder is `packages`, next to the clone of this repo.
+It must exist before the container starts, otherwise Docker fails to create the mount.
+Two optional environment variables on the host change this:
 
 - `ROS_PKG_SOURCE`: folder to mount, relative to this repo (default `../packages`).
 - `ROS_PKG_TARGET`: mount point, relative to the container workspace (default `src/packages`).
 
 VS Code only sees these if it is launched from a shell that exports them (for example `ROS_PKG_SOURCE=../foo code .`).
 Keep only ROS packages in the source folder, because colcon and `colcon-poetry-ros` pick up every package they find.
-The source folder must exist before the container starts.
+
+### Example: fastapi-ros2
+
+[`fastapi-ros2`](https://github.com/daconjurer/fastapi-ros2) is a ROS2 package with a FastAPI API that exercises topics and services.
+It is a good package to test the setup with.
+From the directory that contains this repo, on the host:
+
+```
+mkdir -p packages
+git clone https://github.com/daconjurer/fastapi-ros2.git packages/fastapi-ros2
+```
+
+> Note: `ROS_PKG_SOURCE` is the suggested target location for the clone above. 
+
+Then open this repo in VS Code and reopen it in the container.
+The package is now at `src/packages/fastapi-ros2` in the container, and [Trying out fastapi_ros2](README.md#trying-out-fastapi_ros2) shows how to build and run it.
 
 ## Devcontainer configs
 
@@ -67,7 +97,7 @@ If `install/` is deleted, open a new terminal before rebuilding, because the old
 
 ## Trying out fastapi_ros2
 
-Start these in separate sourced terminals:
+After building the package (see [Building packages](README.md#building-packages)), start these in separate sourced terminals:
 
 ```
 xvfb-run -a ros2 run turtlesim turtlesim_node

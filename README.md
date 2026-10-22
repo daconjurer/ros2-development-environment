@@ -40,11 +40,17 @@ VS Code only sees these if it is launched from a shell that exports them (for ex
 Keep only ROS packages in the source folder, because colcon and `colcon-poetry-ros` pick up every package they find.
 The source folder must exist before the container starts.
 
-## macOS
+## Devcontainer configs
 
-The container works natively on Apple Silicon.
-`--network=host` and X11 are not used.
-Port 8000 is forwarded instead, and turtlesim runs headless under `xvfb-run`.
+Pick the config that matches the host when VS Code asks which one to open:
+
+- `.devcontainer/mac`: works on macOS (Apple Silicon) and also on Linux in headless mode.
+  `--network=host` and X11 are not used, port 8000 is forwarded, and turtlesim runs headless under `xvfb-run`.
+- `.devcontainer/linux`: uses host networking and the host X11 socket, so turtlesim can show its window.
+  Run `xhost +local:` on the host first and start turtlesim without `xvfb-run`.
+  This config is untested.
+
+Both share `docker/Dockerfile.dev`.
 
 ## Building packages
 

@@ -28,6 +28,57 @@ Once the container is opened in VS Code, all the ros2 commands are available and
 folder (which is the `src` folder of the workspace). Building the packages is possible from the
 `ros2-development-workspace` folder (default workspace).
 
+## Packages
+
+The devcontainer bind-mounts a host folder of ROS packages into the workspace at `src/packages`.
+Two environment variables on the host control this, and both are optional:
+
+- `ROS_PKG_SOURCE`: folder to mount, relative to this repo (default `../packages`).
+- `ROS_PKG_TARGET`: mount point, relative to the container workspace (default `src/packages`).
+
+VS Code only sees these if it is launched from a shell that exports them (for example `ROS_PKG_SOURCE=../foo code .`).
+Keep only ROS packages in the source folder, because colcon and `colcon-poetry-ros` pick up every package they find.
+The source folder must exist before the container starts.
+
+## macOS
+
+The container works natively on Apple Silicon.
+`--network=host` and X11 are not used.
+Port 8000 is forwarded instead, and turtlesim runs headless under `xvfb-run`.
+
+## Building packages
+
+From the workspace root, in a fresh shell:
+
+```
+python3 -m colcon_poetry_ros.dependencies.install --base-paths src/packages --install-base install
+colcon build --packages-select <package_name>
+source install/setup.bash
+```
+
+The first command is required, because `colcon build` alone fails with "No virtual environment exists".
+If `install/` is deleted, open a new terminal before rebuilding, because the old virtual environment stays activated in the shell.
+
+## Trying out fastapi_ros2
+
+Start these in separate sourced terminals:
+
+```
+xvfb-run -a ros2 run turtlesim turtlesim_node
+python3 install/fastapi_ros2/lib/fastapi_ros2/service
+cd src/packages/fastapi-ros2 && python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Then, from the host:
+
+```
+curl "localhost:8000/services/sum?a=2&b=3"
+curl "localhost:8000/services/move_turtle?x=5&y=5&theta=1"
+curl "localhost:8000/topics/print"
+```
+
+The turtle position can be checked with `ros2 topic echo /turtle1/pose --once`.
+
 ## Linting
 
 ```

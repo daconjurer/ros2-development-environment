@@ -10,14 +10,17 @@
 	},
 	"remoteUser": "ros",
 	"runArgs": [
-		"--network=host",
 		"--cap-add=SYS_PTRACE",
 		"--security-opt=seccomp:unconfined",
-		"--security-opt=apparmor:unconfined",
-		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+		"--security-opt=apparmor:unconfined"
+	],
+	// --network=host and X11 are Linux-only; publish the API port and run turtlesim under xvfb-run.
+	// Packages-dir mount: ROS_PKG_SOURCE is relative to this repo on the host, ROS_PKG_TARGET relative to the container workspace.
+	"forwardPorts": [8000],
+	"mounts": [
+		"source=${localWorkspaceFolder}/${localEnv:ROS_PKG_SOURCE:../packages},target=${containerWorkspaceFolder}/${localEnv:ROS_PKG_TARGET:src/packages},type=bind"
 	],
 	"containerEnv": {
-		"DISPLAY": "${localEnv:DISPLAY}",
 		"LIBGL_ALWAYS_SOFTWARE": "1" // Needed for software rendering of opengl
 	},
 	// Set *default* container specific settings.json values on container create.

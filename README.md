@@ -75,7 +75,8 @@ The package is now at `src/packages/fastapi-ros2` in the container, and [Trying 
 Pick the config that matches the host when VS Code asks which one to open:
 
 - `.devcontainer/mac`: works on macOS (Apple Silicon) and also on Linux in headless mode.
-  `--network=host` and X11 are not used, port 8000 is forwarded, and turtlesim runs headless under `xvfb-run`.
+  `--network=host` and X11 are not used, one port is published to the host, and turtlesim runs headless under `xvfb-run`.
+  The port is set by the optional host environment variable `ROS_DEV_PORT` (default `8000`), and it is only reachable if the server inside the container binds to `0.0.0.0`.
 - `.devcontainer/linux`: uses host networking and the host X11 socket, so turtlesim can show its window.
   Run `xhost +local:` on the host first and start turtlesim without `xvfb-run`.
   This config is untested.

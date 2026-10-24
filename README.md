@@ -1,8 +1,12 @@
 # VSCode ROS2 Workspace for IoT applications
 
+> [!WARNING]
+> This repository is archived and no longer maintained.
+> It is kept read-only for reference.
+
 This is the **ROS2 Docker development environment**.
 
-It is a fork from the [**VSCode ROS2 Workspace Template** (vscode_ros2_workspace)](https://github.com/athackst/vscode_ros2_workspace/tree/humble) project for the [iron](https://github.com/athackst/vscode_ros2_workspae/tree/iron) distro.
+It is a fork from the [**VSCode ROS2 Workspace Template** (vscode_ros2_workspace)](https://github.com/athackst/vscode_ros2_workspace/tree/humble) project for the [iron](https://github.com/athackst/vscode_ros2_workspace/tree/iron) distro.
 
 
 This project also incorporates [`colcon-poetry-ros`](https://github.com/UrbanMachine/colcon-poetry-ros)
@@ -65,7 +69,7 @@ mkdir -p packages
 git clone https://github.com/daconjurer/fastapi-ros2.git packages/fastapi-ros2
 ```
 
-> Note: `ROS_PKG_SOURCE` is the suggested target location for the clone above. 
+> Note: `ROS_PKG_SOURCE` is the suggested target location for the clone above.
 
 Then open this repo in VS Code and reopen it in the container.
 The package is now at `src/packages/fastapi-ros2` in the container, and [Trying out fastapi_ros2](README.md#trying-out-fastapi_ros2) shows how to build and run it.

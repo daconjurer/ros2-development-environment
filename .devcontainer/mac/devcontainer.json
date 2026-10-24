@@ -13,11 +13,12 @@
 	"runArgs": [
 		"--cap-add=SYS_PTRACE",
 		"--security-opt=seccomp:unconfined",
-		"--security-opt=apparmor:unconfined"
+		"--security-opt=apparmor:unconfined",
+		"--publish=127.0.0.1:${localEnv:ROS_DEV_PORT:8000}:${localEnv:ROS_DEV_PORT:8000}"
 	],
 	// --network=host and X11 are Linux-only; publish the API port and run turtlesim under xvfb-run.
+	// ROS_DEV_PORT (default 8000) is published by Docker rather than forwardPorts, which only some clients (e.g. VS Code, not Zed) implement.
 	// Packages-dir mount: ROS_PKG_SOURCE is relative to this repo on the host, ROS_PKG_TARGET relative to the container workspace.
-	"forwardPorts": [8000],
 	"mounts": [
 		"source=${localWorkspaceFolder}/${localEnv:ROS_PKG_SOURCE:../packages},target=${containerWorkspaceFolder}/${localEnv:ROS_PKG_TARGET:src/packages},type=bind"
 	],
